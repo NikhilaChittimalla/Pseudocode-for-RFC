@@ -1,0 +1,107 @@
+=================PSEUDOCODE FOR RANDOM FOREST CLASSIFIER===================
+
+
+// READ THE DATASET
+The dataset is Wine Quality prediction which is a classification problem
+This datasets is related to red variants of the Portuguese "Vinho Verde" wine.
+The dataset describes the amount of various chemicals present in wine and their effect on it's quality.
+The task in the dataset is to predict the quality of wine using the given data. 
+
+// IMPORT THE LIBRARIES
+Importing the libraries is an essential part of libraries in which our data will be stored in those libraries
+Libraries like numpy, pandas, matplotlib...,etc
+
+// LOAD THE DATASET
+data = load_dataset()
+The dataset contains 1143rows and 13columns
+
+// FILLING NULL VALUES 
+In my dataset there are no null values  
+
+// PREPROCESS THE DATA
+Split the data into train and test splits
+    a. Select the first n samples for the training set, where n is the calculated number of samples
+    b. Select the remaining samples for the test set
+train_data, test_data = train_test_split(data, test_size=test_size)
+
+Handle missing values (if any)
+      a. Remove samples with missing values
+      b. Impute missing values with mean, median, mode or other techniques
+
+Perform feature scaling (optional, depending on use case)
+      a. Standardize the features (mean=0, variance=1)
+
+
+// MODEL BUILDING
+Initialize the random forest classifier object
+
+Set the hyperparameters of the random forest classifier
+      a. Number of decision trees (n_estimators)
+      b. Maximum depth of decision trees (max_depth)
+      c. Minimum number of samples required to split an internal node (min_samples_split)
+      d. Minimum number of samples required to be at a leaf node (min_samples_leaf)
+   
+Create a new decision tree for each iteration
+
+   ## DecisionTree(X, Y, max_depth, num_features, min_samples_split):
+    if max_depth == 0 or len(X) < min_samples_split:
+If we've reached the maximum depth or minimum number of samples, return a leaf node with the majority class
+    return LeafNode(Y)
+ 
+Randomly select a subset of features
+Choose the best feature and threshold to split 
+Split the data based on the chosen feature and threshold
+Recursively build the left and right subtrees
+Return a decision node with the chosen feature and threshold, and the left and right subtrees
+
+   ## choose_split(X, Y, features):
+    best_feature, best_threshold, best_gini = None, None, 1.0
+    for feature in features:
+        # Try splitting on each feature and find the one with the lowest Gini impurity
+        thresholds = np.unique(X[feature])
+        for threshold in thresholds:
+            left_indices = X[feature] < threshold
+            left_labels = Y[left_indices]
+            right_labels = Y[~left_indices]
+            gini = gini_impurity(left_labels, right_labels)
+            if gini < best_gini:
+                best_feature, best_threshold, best_gini = feature, threshold, gini
+    return best_feature, best_threshold
+
+Calculate the Gini impurity of two sets of labels
+   ## gini_impurity(Y1, Y2):
+    p1, p2 = len(Y1) / (len(Y1) + len(Y2)), len(Y2) / (len(Y1) + len(Y2))
+    gini1, gini2 = 1 - (p1 ** 2 + (1 - p1) ** 2), 1 - (p2 ** 2 + (1 - p2) ** 2)
+    return p1 * gini1 + p2 * gini2
+
+## Train the random forest classifier using the training data
+rfc=train_model(train_data[selected_features],target_var)
+
+## Predict the class labels of the test data using the trained random forest classifier
+pred = predict(rfc,test_data[selected_features])
+
+## Evaluate the performance of the random forest classifier using appropriate metrics
+
+## Tune the hyperparameters of the random forest classifier using techniques like grid search or random search
+
+## Compute the error metrics
+    a. Accuracy : Accuracy is the ratio of the number of instances that were correctly classified by the model to the total number of instances in the dataset
+                  Accuracy = (number of correctly classified instances) / (total number of instances)
+    b. Precision : Precision is a metric used to evaluate the performance of a classification model, which measures the proportion of true positive predictions out of all positive predictions made by the model
+                   Precision = True Positives / (True Positives + False Positives)
+    c. Recall : It measures the proportion of actual positive instances that are correctly identified as positive by the model. 
+                Recall = True Positive / (True Positive + False Negative)
+    d. F1 score : metric used in classification tasks to measure the balance between precision and recall
+                  F1 score = 2 * (precision * recall) / (precision + recall)
+    e. Confusion matrix : It shows the number of true positives, false positives, true negatives, and false negatives.
+                             Actual
+                          | 0  | 1  |
+              Predicted 0 | TN | FP |
+                        1 | FN | TP |
+
+## Plot the ROC curve and compute the AUC score
+ROC curve : It is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.
+            The area under the ROC curve (AUC) is a summary measure of the performance of the classifier, with values ranging from 0 to 1.
+            A perfect classifier has an AUC of 1, while a random classifier has an AUC of 0.5.
+AUC score : It is expressed as:
+            AUC = ∫ TPR(FPR) dFPR
