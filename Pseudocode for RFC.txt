@@ -2,10 +2,12 @@
 
 
 // READ THE DATASET
-The dataset is Wine Quality prediction which is a classification problem
-This datasets is related to red variants of the Portuguese "Vinho Verde" wine.
-The dataset describes the amount of various chemicals present in wine and their effect on it's quality.
-The task in the dataset is to predict the quality of wine using the given data. 
+The Problem statement is Titanic dataset
+The sinking of the RMS Titanic is one of the most infamous shipwrecks in history. On April 15, 1912, during her maiden voyage, the Titanic sank after colliding with an iceberg, killing 1502 out of 2224 passengers and crew. This sensational tragedy shocked the international community and led to better safety regulations for ships.
+
+One of the reasons that the shipwreck led to such loss of life was that there were not enough lifeboats for the passengers and crew. Although there was some element of luck involved in surviving the sinking, some groups of people were more likely to survive than others, such as women, children, and the upper-class.
+
+In this challenge, we ask you to complete the analysis of what sorts of people were likely to survive. In particular, we ask you to apply the tools of machine learning to predict which passengers survived the tragedy. 
 
 // IMPORT THE LIBRARIES
 Importing the libraries is an essential part of libraries in which our data will be stored in those libraries
@@ -13,10 +15,19 @@ Libraries like numpy, pandas, matplotlib...,etc
 
 // LOAD THE DATASET
 data = load_dataset()
-The dataset contains 1143rows and 13columns
+The dataset contains train and test data
+train dataset--892rows and 12columns
+test datset--419rows and 11columns
 
 // FILLING NULL VALUES 
-In my dataset there are no null values  
+In my dataset there are null values and categorical values
+filling the null values and dummifying the categorical values will help for the next preprocessing steps
+
+// DATA VISUALIZATION
+according to the dataset we can plot the graphs for checking the better results
+
+//FEATURE CORRELATION MATRIX
+ In this stage, we will find out the classifying features and determining their correlation with the target variable and each other. 
 
 // PREPROCESS THE DATA
 Split the data into train and test splits
